@@ -1,0 +1,26 @@
+{
+    "name":"Config template",
+    "track_filter":['exampleterm1', 'OR term2 AND term3'],
+    "twitterAPI":{
+        "ckey":"%INSERT_CKEY_HERE%",
+        "csecret":"%INSERT_CSECRET_HERE%",
+        "atoken":"%INSERT_ATOKEN_HERE%",
+        "asecret":"%INSERT_ASECRET_HERE%",
+        "default_reconnect_time":"2",
+        "max_reconnect_time":"600"
+    },
+    "output_mode":"file",
+    "output_file":"twitterDB.json",
+    "mongoDB":{
+        "server":"127.0.0.1",
+        "port":"27017",
+        "database":"tweepy_db",
+        "collection":"fracking_collection"
+    },
+    "neo4j":{
+        "auth_server":"localhost:7474",
+        "auth_user":"%INSERT_NEO4J_USER%",
+        "auth_pass":"%INSERT_NEO4J_PASS",
+        "graph_server":"http://localhost:7474/db/data/",
+    }
+}
