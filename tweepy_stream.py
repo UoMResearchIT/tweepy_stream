@@ -22,6 +22,7 @@ WEB_PROXY = os.environ.get('HTTPS_PROXY')
 # try to load config; exit on failure
 # TODO: check for specific exceptions rather than broad case
 
+config = []
 try:
     with open(CONFIG_FILE) as json_config_file:
         config = json.load(json_config_file)
@@ -35,7 +36,6 @@ if 'name' in config:
     logging.info('Config: Using ' + config['name'] + '.')
 else:
     exit()
-
 
 # Get OAuthHandler and API using web_proxy and set access tokens
 
@@ -52,19 +52,19 @@ if config['output_mode'] == "file":
 
     while True:
 
-		logging.info("Obtaining Stream...")
-		twitterStream = Stream(auth, ListenerStoreFile(config))
-		logging.info("Obtained Stream")
+        logging.info("Obtaining Stream...")
+        twitterStream = Stream(auth, ListenerStoreFile(config))
+        logging.info("Obtained Stream")
 
-    try:
-		logging.info("Starting Filter")
-		twitterStream.filter(track=config['track_filter'])
-		logging.info("Filter exited")
+        try:
+            logging.info("Starting Filter")
+            twitterStream.filter(track=config['track_filter'])
+            logging.info("Filter exited")
 
-    except Exception as e:
-		logging.error(e.__doc__ + e.message)
-        time.sleep(10)
-        logging.info("Restarting stream...")
+        except Exception as e:
+            logging.error(e.__doc__ + e.message)
+            time.sleep(10)
+            logging.info("Restarting stream...")
 
 elif config['output_mode'] == "mongoDB":
     logging.info("Using MONGODB output mode to server: " + config['mongoDB']['server'] +":" + config['mongoDB']['port'])
@@ -73,16 +73,16 @@ elif config['output_mode'] == "mongoDB":
 
     while True:
 
-		logging.info("Obtaining Stream...")
-		twitterStream = Stream(auth, ListenerStoreMongoDB(config))
-		logging.info("Obtained Stream")
+        logging.info("Obtaining Stream...")
+        twitterStream = Stream(auth, ListenerStoreMongoDB(config))
+        logging.info("Obtained Stream")
 
-    try:
-		logging.info("Starting Filter")
-		twitterStream.filter(track=config['track_filter'])
-		logging.info("Filter exited")
+        try:
+            logging.info("Starting Filter")
+            twitterStream.filter(track=config['track_filter'])
+            logging.info("Filter exited")
 
-    except Exception as e:
-		logging.error(e.__doc__ + e.message)
-        time.sleep(10)
-        logging.info("Restarting stream...")
+        except Exception as e:
+            logging.error(e.__doc__ + e.message)
+            time.sleep(10)
+            logging.info("Restarting stream...")
