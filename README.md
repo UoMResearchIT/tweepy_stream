@@ -10,3 +10,7 @@ simply appended to an output file.
 ## WIP
 
 Newer version extends functionality by supporting storage of tweets to Neo4j and/or MongoDB as well as direct write to JSON file.
+
+## Requirements
+
+`pip install tweepy`
