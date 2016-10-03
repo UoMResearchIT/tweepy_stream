@@ -22,7 +22,7 @@ WEB_PROXY = os.environ.get('HTTPS_PROXY')
 # try to load config; exit on failure
 # TODO: check for specific exceptions rather than broad case
 
-config = []
+config = dict()
 try:
     with open(CONFIG_FILE) as json_config_file:
         config = json.load(json_config_file)
