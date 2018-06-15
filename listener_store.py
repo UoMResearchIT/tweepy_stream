@@ -1,6 +1,8 @@
 import logging
 import time
+import datetime
 import json
+import subprocess
 from tweepy.streaming import StreamListener
 from pymongo import MongoClient
 
@@ -15,6 +17,8 @@ class ListenerStore(StreamListener):
         self.config = config
         self.reconnect_flag = False
         self.reset_reconnect_timer()
+        self.num_records = 0
+        self.output_file = ""
 
     def ramp_reconnect_timer(self):
         self.reconnect_flag = True
@@ -35,12 +39,21 @@ class ListenerStoreFile(ListenerStore):
     def on_data(self, data):
         try:
             # save data to output file specified in config
-            save_file = open(self.config['output_file'], 'a')
+            if not self.num_records:
+                ts = time.time()
+                st = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d%H%M%S')
+                self.output_file = self.config['output_file']+'-'+st+'.json'
+                
+            save_file = open(self.output_file, 'a')
             save_file.write(data)
             save_file.close()
             if self.reconnect_flag:
                 self.reset_reconnect_timer()
-
+            self.num_records += 1
+            if self.num_records > self.config['records_per_file']:
+                self.num_records = 0
+                subprocess.call(["gzip", self.output_file])
+                
             return True
         except Exception as e:
             logging.warn('Exception - failed on_data(): ' + str(e))
